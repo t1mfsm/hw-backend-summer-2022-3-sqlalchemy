@@ -81,7 +81,7 @@ def cli(aiohttp_client, event_loop, server) -> TestClient:
 async def authed_cli(cli, config) -> TestClient:
     await cli.post(
         "/admin.login",
-        data={
+        json={
             "email": config.admin.email,
             "password": config.admin.password,
         },
