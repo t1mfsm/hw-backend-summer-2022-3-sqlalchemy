@@ -34,20 +34,18 @@ class QuestionAddView(AuthRequiredMixin, View):
     @request_schema(QuestionSchema)
     @response_schema(QuestionSchema)
     async def post(self):
-        title = self.data["title"]
-        theme_id = self.data["theme_id"]
         answers = [
-            Answer(title=a["title"], is_correct=a["is_correct"])
-            for a in self.data["answers"]
+            Answer(title=answer["title"], is_correct=answer["is_correct"])
+            for answer in self.data["answers"]
         ]
-        if len(set([a.is_correct for a in answers])) == 1:
-            raise HTTPBadRequest
 
+        if len(set(answer.is_correct for answer in answers)) == 1:
+            raise HTTPBadRequest
 
         try:
             question = await self.store.quizzes.create_question(
-                title=title,
-                theme_id=theme_id,
+                title=self.data["title"],
+                theme_id=self.data["theme_id"],
                 answers=answers,
             )
         except IntegrityError as e:
@@ -65,10 +63,7 @@ class QuestionListView(AuthRequiredMixin, View):
         questions = await self.store.quizzes.list_questions(
             theme_id=self.data.get("theme_id")
         )
+
         return json_response(
-            data=ListQuestionSchema().dump(
-                {
-                    "questions": questions,
-                }
-            )
+            data=ListQuestionSchema().dump({"questions": questions})
         )
