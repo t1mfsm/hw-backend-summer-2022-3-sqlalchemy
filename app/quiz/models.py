@@ -1,4 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship, mapped_column, Mapped
+
 from app.store.database.sqlalchemy_base import db
 
 
@@ -13,7 +17,7 @@ class Question:
     id: int | None
     title: str
     theme_id: int
-    answers: list["Answer"]
+    answers: list["Answer"] = field(default_factory=list)
 
 
 @dataclass
@@ -24,14 +28,29 @@ class Answer:
 
 class ThemeModel(db):
     __tablename__ = "themes"
-    pass
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(unique=True)
+    question = relationship("QuestionModel")
 
 
 class QuestionModel(db):
     __tablename__ = "questions"
-    pass
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(unique=True)
+    theme_id: Mapped[int] = mapped_column(
+        ForeignKey("themes.id", ondelete="CASCADE"), nullable=False
+    )
+    answers = relationship("AnswerModel")
 
 
 class AnswerModel(db):
     __tablename__ = "answers"
-    pass
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str]
+    is_correct: Mapped[bool]
+    question_id: Mapped[int] = mapped_column(
+        ForeignKey("questions.id", ondelete="CASCADE")
+    )
