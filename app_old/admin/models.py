@@ -2,9 +2,6 @@ from dataclasses import dataclass
 from hashlib import sha256
 from typing import Optional
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
-
 from app.store.database.sqlalchemy_base import db
 
 
@@ -24,7 +21,4 @@ class Admin:
 
 class AdminModel(db):
     __tablename__ = "admins"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(unique=True)
-    password: Mapped[str]
+    pass

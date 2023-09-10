@@ -35,7 +35,8 @@ pytest-mock==3.8.2
 python-dateutil==2.8.2
 PyYAML==6.0
 six==1.16.0
-SQLAlchemy==1.4.40
+SQLAlchemy==2.0.20
 tomli==2.0.1
+typing_extensions==4.7.1
 webargs==5.5.3
 yarl==1.8.1
