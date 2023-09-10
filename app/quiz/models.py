@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 
 from app.store.database.sqlalchemy_base import db
