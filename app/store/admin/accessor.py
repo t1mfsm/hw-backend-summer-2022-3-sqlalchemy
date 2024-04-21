@@ -9,10 +9,12 @@ if TYPE_CHECKING:
 
 class AdminAccessor(BaseAccessor):
     async def connect(self, app: "Application") -> None:
-        raise NotImplementedError
+        self.app = app
 
     async def get_by_email(self, email: str) -> AdminModel | None:
-        raise NotImplementedError
+        for admin in self.app.store.admins:
+            if email == admin:
+                pass
 
     async def create_admin(self, email: str, password: str) -> AdminModel:
         raise NotImplementedError

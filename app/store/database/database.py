@@ -1,9 +1,10 @@
 from typing import TYPE_CHECKING, Any
 
+from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
-    async_sessionmaker,
+    async_sessionmaker, create_async_engine,
 )
 from sqlalchemy.orm import DeclarativeBase
 
@@ -22,14 +23,14 @@ class Database:
         self.session: async_sessionmaker[AsyncSession] | None = None
 
     async def connect(self, *args: Any, **kwargs: Any) -> None:
-        raise NotImplementedError
-        # self.engine = create_async_engine(
-        #     URL.create(
-        #     ),
-        # )
-        # self.session = async_sessionmaker(
-        #
-        # )
+        self.engine = create_async_engine(
+            URL.create(
+                """postgresql+asyncpg://kts_user:kts_pass@localhost/kts"""
+            ),
+        )
+        self.session = async_sessionmaker(
+
+        )
 
     async def disconnect(self, *args: Any, **kwargs: Any) -> None:
-        raise NotImplementedError
+        await self.engine.dispose()
