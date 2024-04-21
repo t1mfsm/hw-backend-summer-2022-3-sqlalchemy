@@ -15,6 +15,7 @@ class QuestionModel(BaseModel):
     id = Column(BigInteger, primary_key=True)
     theme_id = Column(BigInteger, ForeignKey("themes.id"), nullable=False)
     title = Column(String, unique=True, nullable=False)
+    # здрасьте
 
 
 class AnswerModel(BaseModel):
