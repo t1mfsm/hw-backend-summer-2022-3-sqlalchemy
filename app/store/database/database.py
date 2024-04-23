@@ -25,11 +25,15 @@ class Database:
     async def connect(self, *args: Any, **kwargs: Any) -> None:
         self.engine = create_async_engine(
             URL.create(
-                """postgresql+asyncpg://kts_user:kts_pass@localhost/kts"""
+                drivername="postgresql+asyncpg",
+                username="kts_user",
+                password="kts_pass",
+                host="localhost",
+                database="kts"
             ),
         )
         self.session = async_sessionmaker(
-
+            self.engine, expire_on_commit=False
         )
 
     async def disconnect(self, *args: Any, **kwargs: Any) -> None:
